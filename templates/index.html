@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EV Chassis Prediction</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="static/index1.png" type="image/x-icon">
+  
+  <!-- Add Google Fonts for Lora font -->
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Ensure the video takes full viewport */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      
+    }
+
+    /* Video background styling */
+    .video-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    /* Content styling */
+    .content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      color: white;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    /* Gradient for the header with a dark translucent effect */
+    .header {
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(35, 50, 62, 1) 100%); /* Dark translucent gradient */
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      font-size: 36px;
+      color: white;
+      font-family: 'Lora', serif; /* Apply the 'Lora' font for the header */
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      max-width: 600px;
+      text-align: center;
+      margin-top: 20px;
+      margin-left:30vw;
+      height:80%;
+
+    }
+
+    .form-control {
+      margin-bottom: 10px;
+    }
+
+    /* Bright color for button */
+    .btn-bright {
+      background-color: #4CAF50; /* Professional green color */
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .btn-bright:hover {
+      background-color: #45a049; /* Darker green when hovered */
+    }
+
+    button {
+      margin-top: 10px;
+    }
+    
+    .predictionForm{
+      position:relative;
+      right:5vw;
+    }
+
+    
+    h2{
+      position:relative;
+      right:0vw;
+    }
+
+   p{
+    width:100%;
+    position:relative;
+    right:25vw;
+    margin-top:30px;
+    height:20%;
+
+   }
+
+   @media (max-width: 768px) {
+    .container {
+      margin-left: 10vw;
+      width: 80%;
+    }
+
+    .header {
+      font-size: 28px;
+    }
+
+    .form-control {
+      width: 100%;
+    }
+  }
+
+  /* For very small screens (phones) */
+  @media (max-width: 480px) {
+    .container {
+      margin-left: 5vw;
+      width: 90%;
+      padding: 20px;
+    }
+
+    .header {
+      font-size: 24px;
+    }
+
+    .btn-bright {
+      font-size: 16px;
+    }
+
+    h2 {
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 14px;
+      right: 0;
+    }
+  }
+
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Video Background -->
+  <video class="video-background" autoplay muted loop>
+    <source src="{{ url_for('static', filename='ev_back.mp4') }}" type="video/mp4">
+    <source src="{{ url_for('static', filename='ev_back.webm') }}" type="video/webm">
+    <source src="{{ url_for('static', filename='ev_back.ogv') }}" type="video/ogg">
+  </video>
+
+  <!-- Header and Content -->
+  <div class="header">
+    Sustainable Selector
+  </div>
+
+  <div class="container">
+    <h2 style="color: #4CAF50;">EV Chassis Material Selector</h2>
+
+    <!-- Form with input fields -->
+    <form class="predictionForm" id="predictionForm">
+      <input type="number" name="input1" class="form-control" placeholder="Ultimate tensile strength in MPa" required step="any"><br>
+      <input type="number" name="input2" class="form-control" placeholder="Yield strength in MPa" required step="any"><br>
+      <input type="number" name="input3" class="form-control" placeholder="Elastic modulus in MPa" required step="any"><br>
+      <input type="number" name="input4" class="form-control" placeholder="Shear modulus in MPa" required step="any"><br>
+      <input type="number" name="input5" class="form-control" placeholder="Poisson's Ratio" required step="any"><br>
+      <input type="number" name="input6" class="form-control" placeholder="Density in kg/cubic m" required step="any"><br>
+      <button type="submit" class="btn btn-bright btn-lg">Predict</button>
+    </form>
+    
+    <!-- Display Prediction Result -->
+    <p id="result">
+
+      The result will be displayed here
+
+    </p>
+
+
+  </div>
+
+  <script>
+    document.getElementById("predictionForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const resultElement = document.getElementById("result");
+        resultElement.textContent = "Predicting...";
+        try {
+            const formData = new FormData(e.target);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            const response = await fetch("/predict1", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            if (result.error) {
+                resultElement.textContent = `Error: ${result.error}`;
+            } else {
+                resultElement.textContent = `Prediction: ${result.prediction}`;
+            }
+        } catch (err) {
+            resultElement.textContent = `Error: ${err.message}`;
+        }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

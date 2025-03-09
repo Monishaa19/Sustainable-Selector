@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainable Selector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="static/home.png" type="image/x-icon">
+
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', Arial, sans-serif;
+            background: url('{{ url_for('static', filename='back.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .navbar {
+            background-color: #c7f9cc;
+            color: #38a3a5;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            animation: slideDown 1s ease;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .navbar h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 500;
+            
+           
+        }
+        .navbar a {
+            color: #38a3a5;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 18px;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:visited{
+            color :#8a3a5;
+        }
+        .navbar a:hover {
+            color: #00bfff;
+        }
+
+        /* Main Container */
+        .container {
+            text-align: center;
+            margin: 80px 20px;
+            animation: fadeIn 2s ease-in;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .container h1 {
+            font-size: 48px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            color:#22577a;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        button {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(to right, #38a3a5,rgb(26, 112, 113));
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        button:hover {
+            background: linear-gradient(to right, #0056b3, #003f7f);
+            transform: scale(1.1);
+        }
+
+        /* Image Section */
+        .image-section {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 20px;
+            flex-wrap: wrap;
+        }
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+            animation: zoomIn 1.5s ease;
+        }
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .image-wrapper img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .image-wrapper img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            display: none;
+            position: absolute;
+            bottom: 220px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+            width: 250px;
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .image-wrapper:hover .tooltip {
+            display: block;
+        }
+
+        /* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .navbar h1 {
+        font-size: 24px;
+    }
+
+    .navbar a {
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .container h1 {
+        font-size: 36px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .image-section {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .container h1 {
+        font-size: 28px;
+    }
+
+    .navbar h1 {
+        font-size: 20px;
+    }
+
+    .button-group button {
+        font-size: 16px;
+        padding: 12px 30px;
+    }
+}
+
+    </style>
+</head>
+<body >
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Sustainable Selector</h1>
+        <div>
+            <a href="/">Home</a>
+            <a href="/EV">EV Selection</a>
+            <a href="/sustainable">Sustainable Selection</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome to Sustainable Selector</h1>
+        <div class="button-group">
+            <!-- Buttons -->
+            <form action="/EV" method="get">
+                <button type="submit">EV Chassis Material Selection</button>
+            </form>
+            <form action="/sustainable" method="get">
+                <button type="submit">Sustainable Material Selection</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Section -->
+    <div class="image-section">
+        <div class="image-wrapper">
+            <img src="{{ url_for('static', filename='ev.jpg') }}" alt="EV Materials">
+            <div class="tooltip">Machine learning approach to predict materials for EV chassis.</div>
+        </div>
+        <div class="image-wrapper">
+            <img src="{{ url_for('static', filename='pck.png') }}" alt="Sustainable Packaging">
+            <div class="tooltip">AI model to suggest sustainable packaging materials.</div>
+        </div>
+    </div>
+</body>
+</html>
