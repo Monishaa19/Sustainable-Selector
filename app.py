@@ -1,11 +1,10 @@
-
-from flask import Flask, request, jsonify, render_template
-import joblib
 from flask import Flask, request, jsonify, render_template
 import joblib
 import pandas as pd
 import google.generativeai as genai
+from dotenv import load_dotenv  # Import dotenv
 import os
+load_dotenv()  # Load environment variables
 genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 
 app = Flask(__name__)  
@@ -54,7 +53,6 @@ def predict1():
     
 @app.route('/predict2', methods=['POST'])
 def predict2():
-    genai.configure(api_key)
 
 
     def generate_description(material, cost, shelflife, sustainability_score, input_data):
