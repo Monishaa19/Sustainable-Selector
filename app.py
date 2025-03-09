@@ -54,7 +54,7 @@ def predict1():
     
 @app.route('/predict2', methods=['POST'])
 def predict2():
-    genai.configure(api_key="AIzaSyBCOUSy8DZ5Qzxhqq0gOkRCUJEHNVLjoZM")
+    genai.configure(api_key)
 
 
     def generate_description(material, cost, shelflife, sustainability_score, input_data):
